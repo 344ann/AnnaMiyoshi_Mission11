@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Mission11.API.Data;
 
+// Represents a book entity in the database
 public class Book
 {
     [Key]
