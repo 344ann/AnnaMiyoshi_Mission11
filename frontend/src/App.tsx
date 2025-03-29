@@ -3,6 +3,7 @@ import BooksPage from './pages/BooksPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PurchasePage from './pages/PurchasePage';
 import CartPage from './pages/CartPage';
+import { CartProvider } from './context/CartContext';
 //Router = enable routing generally
 //Routes = hold the route definitions
 //Route = a specific route
@@ -11,14 +12,19 @@ import CartPage from './pages/CartPage';
 function App() {
   return (
     <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<BooksPage />} />
-          <Route path="/books" element={<BooksPage />} />
-          <Route path="/purchase/:title" element={<PurchasePage />} />
-          <Route path="/cart" element={<CartPage />} />
-        </Routes>
-      </Router>
+      <CartProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<BooksPage />} />
+            <Route path="/books" element={<BooksPage />} />
+            <Route
+              path="/purchase/:title/:boodID/:price"
+              element={<PurchasePage />}
+            />
+            <Route path="/cart" element={<CartPage />} />
+          </Routes>
+        </Router>
+      </CartProvider>
     </>
   );
 }

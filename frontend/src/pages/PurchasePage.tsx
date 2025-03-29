@@ -1,17 +1,39 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import WelcomeBand from '../components/WelcomeBand';
+import { useCart } from '../context/CartContext';
+import { CartItem } from '../types/CartItem';
+import { useState } from 'react';
 
 function PurchasePage() {
   const navigate = useNavigate();
-  const { title } = useParams();
+  const { title, bookID, price } = useParams();
+  const { addToCart } = useCart(); // built in CartContext page and exported
+  const [quantity, setQuantity] = useState<number>(0);
+
+  const handleAddToCart = () => {
+    const newItem: CartItem = {
+      bookID: Number(bookID),
+      title: title || 'No Title Found',
+      price: Number(price),
+      quantity,
+    };
+    addToCart(newItem);
+    navigate('/cart');
+  };
+
   return (
     <>
       <WelcomeBand />
       <h2>Purchase {title}</h2>
 
       <div>
-        <input type="number" placeholder="Enter purchase amount" />
-        <button onClick={() => navigate('/cart')}>Add to Cart</button>
+        <input
+          type="number"
+          placeholder="Enter purchase quantity"
+          value={quantity}
+          onChange={(x) => setQuantity(Number(x.target.value))}
+        />
+        <button onClick={handleAddToCart}>Add to Cart</button>
       </div>
 
       <button onClick={() => navigate(-1)}>Go Back</button>

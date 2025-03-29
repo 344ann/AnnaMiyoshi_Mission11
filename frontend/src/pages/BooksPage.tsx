@@ -2,6 +2,7 @@ import { useState } from 'react';
 import BookList from '../components/BookList';
 import CategoryFilter from '../components/CategoryFilter';
 import WelcomeBand from '../components/WelcomeBand';
+import CartSummary from '../components/CartSummary';
 
 // Importing the BookList component to display the list of books.
 
@@ -10,6 +11,7 @@ function BooksPage() {
 
   return (
     <div className="container mt-4">
+      <CartSummary />
       <WelcomeBand />
       <div className="row">
         <div className="col-md-3">

@@ -73,16 +73,18 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
         Sort by Title {sortAscending ? '(Ascending)' : '(Descending)'}
       </button> */}
 
-      <button
-        onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-      >
-        Sort by Title {sortOrder === 'asc' ? '▲' : '▼'}
-      </button>
+      <div className="sticky-top bg-white p-2">
+        <button
+          onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+        >
+          Sort by Title {sortOrder === 'asc' ? '▲' : '▼'}
+        </button>
+      </div>
 
       <br />
       <br />
       {books.map((b) => (
-        <div id="bookCard" className="card" key={b.bookID}>
+        <div id="bookCard" className="card mb-3 shadow" key={b.bookID}>
           <h3 className="card-title">{b.title}</h3>
           <div className="card-body">
             <ul className="list-unstyled">
@@ -116,7 +118,9 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
             </ul>
             <button
               className="btn btn-success"
-              onClick={() => navigate(`/purchase/${b.title}`)}
+              onClick={() =>
+                navigate(`/purchase/${b.title}/${b.bookID}/${b.price}`)
+              }
             >
               Purchase
             </button>
