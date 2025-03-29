@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Book } from './types/Book';
+import { Book } from '../types/Book';
+import { useNavigate } from 'react-router-dom';
 
-function BookList() {
+// can use different variable name from the other side (don't need to use selectedCategories for variable name)
+function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   // store the info from the API in an array
   //associate some data with this book list component
   //use state to keep track of this data as self-enclosed component
@@ -24,6 +26,8 @@ function BookList() {
   //State to track sorting order using backend
   const [sortOrder, setSortOrder] = useState<string>('asc');
 
+  const navigate = useNavigate();
+
   // // State to track sorting order (true for ascending, false for descending) FRONTEND
   // const [sortAscending, setSortAscending] = useState<boolean>(true);
 
@@ -32,10 +36,19 @@ function BookList() {
   useEffect(() => {
     const fetchBooks = async () => {
       // Fetches book data from the API with pagination parameters
+
+      const categoryParams = selectedCategories
+        .map((cat) => `categories=${encodeURIComponent(cat)}`)
+        .join('&');
+      //encodeURIComponent => put info in the right format, map => like a for each loop
+
       const response = await fetch(
-        `http://localhost:5288/Book/AllBooks?pageHowMany=${pageSize}&pageNum=${pageNum}&sortBy=title&sortOrder=${sortOrder}`
-      ); // awaits a fetch from this address // sort order using backend
+        `http://localhost:5288/Book/AllBooks?pageHowMany=${pageSize}&pageNum=${pageNum}&sortBy=title&sortOrder=${sortOrder}${selectedCategories.length ? `&${categoryParams}` : ''}`
+      );
+      //awaits a fetch from this address //sort order using backend
       //if there is a variable inside the string, use back tick (`) instead of normal quotes (')
+      //selectedCategories.length => check if selectedCategories has a length = has something in it
+
       const data = await response.json(); // try to pull the json out of that into a variable called data, Parses the JSON response from the API
       setBooks(data.books); //once we have that data, set books to hold the data that comes in, Update the books list with the fetched data
       setTotalItems(data.totalNumBooks); // Set the total number of books (for pagination calculation)
@@ -43,7 +56,7 @@ function BookList() {
     };
 
     fetchBooks(); //call the function trying to pull the data
-  }, [pageSize, pageNum, totalItems, sortOrder]);
+  }, [pageSize, pageNum, totalItems, selectedCategories, sortOrder]);
 
   // // Function to handle sorting books by title (ascending/descending) FRONTEND
   // const sortedBooks = [...books].sort((a, b) => {
@@ -54,7 +67,6 @@ function BookList() {
 
   return (
     <>
-      <h1>List of Books</h1>
       <br />
 
       {/* <button onClick={() => setSortAscending(!sortAscending)}>
@@ -102,6 +114,12 @@ function BookList() {
                 <strong>Price: </strong>${b.price}
               </li>
             </ul>
+            <button
+              className="btn btn-success"
+              onClick={() => navigate(`/purchase/${b.title}`)}
+            >
+              Purchase
+            </button>
           </div>
         </div>
       ))}

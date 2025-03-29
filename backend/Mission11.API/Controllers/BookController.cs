@@ -21,10 +21,17 @@ public class BookController : ControllerBase
    [HttpGet("AllBooks")]
    //going to the database and book table, and getting all the entries and putting them to a list
    // Fetches a paginated list of books from the database
-   public IActionResult GetBooks(int pageHowMany = 5, int pageNum = 1, string sortBy = "title", string sortOrder = "asc")
+   public IActionResult GetBooks(int pageHowMany = 5, int pageNum = 1, [FromQuery] List<string>? categories = null, string sortBy = "title", string sortOrder = "asc")
    {
       var booksQuery = _bookContext.Books.AsQueryable();
+      //normal list => the query has to be completed and runs immediately to get data
+      //Queryable => for building queries, built it a piece at a time and ready we can use the query
 
+      if (categories != null && categories.Any()) //two ways to check if something in there
+      {
+         booksQuery = booksQuery.Where(b => categories.Contains(b.Category)); //if the categories list match the categories of those specific records by looking through each row => include in query
+      }
+      
       // Apply sorting by title
       if (sortBy.ToLower() == "title")
       {
@@ -33,15 +40,15 @@ public class BookController : ControllerBase
             : booksQuery.OrderBy(b => b.Title);
       }
       
+      // Gets the total number of books in the database
+      var totalNumBooks = booksQuery.Count();
+      
       // Retrieves a subset of books by skipping (pageNum - 1) * pageHowMany records
       // and taking the next "pageHowMany" records
       var booklist = booksQuery
          .Skip((pageNum - 1) * pageHowMany) // Skips records for previous pages
          .Take(pageHowMany) // Retrieves only the number of records specified by pageHowMany
          .ToList(); // Converts the result to a list
-      
-      // Gets the total number of books in the database
-      var totalNumBooks = booksQuery.Count();
       
       // Constructs an anonymous object to return both the books and the total number of books
       var returnObject = new
@@ -52,6 +59,17 @@ public class BookController : ControllerBase
       
       //Ok is a 200 status in world of networking, this is the different way of turing info working with IActionResult and allowing to pass two different-type objects
       return Ok(returnObject);
+   }
+
+   [HttpGet("GetCategories")]
+   public IActionResult GetCategories()
+   {
+      var categories = _bookContext.Books
+         .Select(b => b.Category)
+         .Distinct()
+         .ToList();
+      
+      return Ok(categories);
    }
 
    [HttpGet("FictionBooks")]
