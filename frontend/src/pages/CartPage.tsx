@@ -23,7 +23,11 @@ function CartPage() {
             <ul>
               {cart.map((item: CartItem) => (
                 <li key={item.bookID}>
-                  {item.title}: ${item.price} x {item.quantity}
+                  Title of Book: {item.title}
+                  <br />
+                  Price Per Book: ${item.price}
+                  <br />
+                  Quantity of Book: {item.quantity}
                   <br />
                   Subtotal: ${(item.price * item.quantity).toFixed(2)}
                   <br />
