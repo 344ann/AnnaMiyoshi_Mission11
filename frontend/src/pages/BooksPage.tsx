@@ -5,8 +5,10 @@ import WelcomeBand from '../components/WelcomeBand';
 import CartSummary from '../components/CartSummary';
 
 // Importing the BookList component to display the list of books.
+// BooksPage serves as the main page for displaying books, filtering by category, and showing cart summary.
 
 function BooksPage() {
+  // State to manage selected categories for filtering books
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]); //App is the parent elements so children elements can share
 
   return (
@@ -29,5 +31,7 @@ function BooksPage() {
 }
 
 //selectedCategories={selectedCategories} onCheckboxChange={setSelectedCategories} => can name anything you want
+// This means that the component is passing down state and a state updater function
+// which can be named anything.
 
 export default BooksPage;

@@ -3,10 +3,10 @@ import { useCart } from '../context/CartContext';
 import { CartItem } from '../types/CartItem';
 
 function CartPage() {
-  const navigate = useNavigate();
-  const { cart, removeFromCart } = useCart();
+  const navigate = useNavigate(); // Hook for navigation between pages
+  const { cart, removeFromCart } = useCart(); // Get cart data and remove function from context
 
-  // Calculate total
+  // Calculate total price of all items in the cart
   const totalAmount = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0

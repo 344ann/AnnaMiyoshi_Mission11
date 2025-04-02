@@ -5,20 +5,21 @@ import { CartItem } from '../types/CartItem';
 import { useState } from 'react';
 
 function PurchasePage() {
-  const navigate = useNavigate();
-  const { title, bookID, price } = useParams();
-  const { addToCart } = useCart(); // built in CartContext page and exported
-  const [quantity, setQuantity] = useState<number>(0);
+  const navigate = useNavigate(); // Hook to navigate between pages
+  const { title, bookID, price } = useParams(); // Get URL parameters
+  const { addToCart } = useCart(); // built in CartContext page and exported, Access the addToCart function from CartContext
+  const [quantity, setQuantity] = useState<number>(0); // State for storing the purchase quantity
 
+  // Function to handle adding the selected book to the cart
   const handleAddToCart = () => {
     const newItem: CartItem = {
-      bookID: Number(bookID),
-      title: title || 'No Title Found',
-      price: Number(price),
-      quantity,
+      bookID: Number(bookID), // Convert bookID from string to number
+      title: title || 'No Title Found', // Fallback if title is missing
+      price: Number(price), // Convert price from string to number
+      quantity, // Use selected quantity from state
     };
-    addToCart(newItem);
-    navigate('/cart');
+    addToCart(newItem); // Add the item to the cart
+    navigate('/cart'); // Redirect to the cart page after adding item
   };
 
   return (

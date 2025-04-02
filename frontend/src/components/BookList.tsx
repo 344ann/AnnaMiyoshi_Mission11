@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Book } from '../types/Book';
 import { useNavigate } from 'react-router-dom';
 
+// BookList component that fetches and displays a list of books with sorting, filtering, and pagination
 // can use different variable name from the other side (don't need to use selectedCategories for variable name)
 function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   // store the info from the API in an array
@@ -26,7 +27,7 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   //State to track sorting order using backend
   const [sortOrder, setSortOrder] = useState<string>('asc');
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook for navigation
 
   // // State to track sorting order (true for ascending, false for descending) FRONTEND
   // const [sortAscending, setSortAscending] = useState<boolean>(true);
@@ -37,11 +38,13 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
     const fetchBooks = async () => {
       // Fetches book data from the API with pagination parameters
 
+      // Construct category filter parameters for API request
       const categoryParams = selectedCategories
         .map((cat) => `categories=${encodeURIComponent(cat)}`)
         .join('&');
       //encodeURIComponent => put info in the right format, map => like a for each loop
 
+      // Fetch books from the backend with pagination and sorting parameters
       const response = await fetch(
         `http://localhost:5288/Book/AllBooks?pageHowMany=${pageSize}&pageNum=${pageNum}&sortBy=title&sortOrder=${sortOrder}${selectedCategories.length ? `&${categoryParams}` : ''}`
       );
@@ -56,7 +59,7 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
     };
 
     fetchBooks(); //call the function trying to pull the data
-  }, [pageSize, pageNum, totalItems, selectedCategories, sortOrder]);
+  }, [pageSize, pageNum, totalItems, selectedCategories, sortOrder]); // Dependencies for re-fetching
 
   // // Function to handle sorting books by title (ascending/descending) FRONTEND
   // const sortedBooks = [...books].sort((a, b) => {
