@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "undefined/subscriptions/68cf9bce-e1e2-4d12-aa0b-f0a2121bac2e/resourceGroups/appsvc_windows_eastus/providers/Microsoft.Web/sites/Mission13-AnnaMiyoshi-Backend",
+  "appService.deploySubpath": "backend/Mission11.API/publish"
+}
