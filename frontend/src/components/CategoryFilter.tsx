@@ -22,7 +22,7 @@ function CategoryFilter({
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          'https://mission13-annamiyoshi-backend-hwe5erhabvebekdz.eastus-01.azurewebsites.net/Book/GetCategories' // API endpoint to get categories
+          'https://mission13-anna-backend-g9bdb2f4aqdeewc7.eastus-01.azurewebsites.net/Book/GetCategories' // API endpoint to get categories
         );
         const data = await response.json(); // Parse response JSON
         console.log('Fetched categories:', data); // Log fetched categories
