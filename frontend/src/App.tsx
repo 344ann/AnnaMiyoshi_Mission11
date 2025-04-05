@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PurchasePage from './pages/PurchasePage';
 import CartPage from './pages/CartPage';
 import { CartProvider } from './context/CartContext';
+import AdminBooksPage from './pages/AdminBooksPage';
 //Router = enable routing generally
 //Routes = hold the route definitions
 //Route = a specific route
@@ -22,6 +23,7 @@ function App() {
               element={<PurchasePage />}
             />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/adminbooks" element={<AdminBooksPage />} />
           </Routes>
         </Router>
       </CartProvider>

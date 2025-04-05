@@ -17,7 +17,18 @@ builder.Services.AddDbContext<BookDbContext>(options =>
 
 // Enables Cross-Origin Resource Sharing (CORS).
 // This is necessary to allow requests from the frontend (e.g., a React app) to access this API.
-builder.Services.AddCors();
+// Registering CORS (Cross-Origin Resource Sharing) policy in the service container.
+// This policy allows HTTP requests from your React development server (http://localhost:5173),
+// and permits any HTTP method (GET, POST, PUT, DELETE, etc.) and any headers.
+builder.Services.AddCors(options => 
+    options.AddPolicy("AllowReactApp",
+         policy =>
+             {
+                 policy.WithOrigins("http://localhost:5173") // Allow only this origin
+                     .AllowAnyMethod() // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+                     .AllowAnyHeader(); // Allow all headers
+             }));
+    
 
 var app = builder.Build();
 
@@ -28,8 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Configures CORS to allow requests from "http://localhost:5173" (your React frontend).
-app.UseCors(x => x.WithOrigins("http://localhost:5173"));
+// Enable the CORS policy defined above so the backend can accept requests from the React frontend
+app.UseCors("AllowReactApp");
 
 app.UseHttpsRedirection();
 

@@ -6,7 +6,7 @@ import { CartItem } from '../types/CartItem';
 // This ensures that any component consuming the context gets the correct structure
 interface CartContextType {
   cart: CartItem[]; // Array of items in the cart
-  addToCart: (item: CartItem) => void; // Function to add an item to the cart
+  addToCart: (item: CartItem) => void; // Function to add an item to the cart //CartItem is not an array, an individual one
   removeFromCart: (bookID: number) => void; // Function to remove an item from the cart by bookID
   clearCart: () => void; // Function to clear the entire cart
 }
@@ -27,13 +27,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         (c) =>
           c.bookID === item.bookID
             ? { ...c, quantity: c.quantity + item.quantity } // If item exists, update the quantity
-            : c
-        //not adding as a new item but update the price
+            : c // otherwise leave it as it was
+        //not adding as a new item but update the quantity
       );
 
       return existingItem ? updatedCart : [...prevCart, item];
       //if the item already existed in the cart, updateCart, otherwise, add the item to the preveous cart
-      // If the item already exists, return the updated cart; otherwise, add the new item to the cart
     });
     //spread operator = add to the array containing the previous cart and new item that is being passed into
   };
@@ -72,3 +71,4 @@ export const useCart = () => {
   }
   return context;
 };
+//this makes other pages able to use useCart

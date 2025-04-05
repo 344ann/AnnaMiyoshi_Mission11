@@ -61,7 +61,9 @@ public class BookController : ControllerBase
       return Ok(returnObject);
    }
 
+   // Endpoint to get a list of all unique categories
    [HttpGet("GetCategories")]
+   // Select distinct categories from the Books table
    public IActionResult GetCategories()
    {
       var categories = _bookContext.Books
@@ -69,8 +71,60 @@ public class BookController : ControllerBase
          .Distinct()
          .ToList();
       
-      return Ok(categories);
+      return Ok(categories); // Return the list of categories
    }
+
+   // Endpoint to add a new book
+   [HttpPost("AddBook")]
+   public IActionResult AddBook([FromBody] Book newBook)
+   {
+      _bookContext.Books.Add(newBook); // Add the new book to the database
+      _bookContext.SaveChanges(); // Save changes to the database
+      return Ok(newBook); // Return the newly added book
+   }
+
+   // Endpoint to update an existing book by its ID
+   [HttpPut("UpdateBook/{bookID}")]
+   public IActionResult updateBook(int bookID, [FromBody] Book updatedBook) 
+   {
+      var existingBook = _bookContext.Books.Find(bookID); // Find the existing book by ID
+      
+      // Update the book's properties
+      existingBook.Title = updatedBook.Title;
+      existingBook.Author = updatedBook.Author;
+      existingBook.Publisher = updatedBook.Publisher;
+      existingBook.ISBN = updatedBook.ISBN;
+      existingBook.Classification = updatedBook.Classification;
+      existingBook.Category = updatedBook.Category;
+      existingBook.PageCount = updatedBook.PageCount;
+      existingBook.Price = updatedBook.Price;
+      
+      _bookContext.Books.Update(existingBook); // Apply the update to the context
+      _bookContext.SaveChanges(); // Save changes to the database
+      
+      return Ok(existingBook); // Return the updated book
+   } 
+
+   // Endpoint to delete a book by its ID
+   [HttpDelete("DeleteBook/{bookID}")]
+   public IActionResult DeleteBook(int bookID)
+   {
+      var book = _bookContext.Books.Find(bookID); // Find the book by ID
+
+      if (book == null)
+      {
+         // If not found, return a 404 response
+         return NotFound(new {message = "Book not found"});
+      }
+      
+      _bookContext.Books.Remove(book); // Remove the book from the database
+      _bookContext.SaveChanges(); // Save changes to the database
+      
+      return NoContent(); // Return 204 No Content to indicate successful deletion
+   }
+   
+   
+   
 
    [HttpGet("FictionBooks")]
    // Retrieves all books where the classification is "Fiction"
