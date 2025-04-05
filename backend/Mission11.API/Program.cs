@@ -24,7 +24,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
          policy =>
              {
-                 policy.WithOrigins("http://localhost:5173") // Allow only this origin
+                 policy.AllowAnyOrigin() // Allow only this origin
                      .AllowAnyMethod() // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
                      .AllowAnyHeader(); // Allow all headers
              }));
@@ -39,10 +39,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
 // Enable the CORS policy defined above so the backend can accept requests from the React frontend
 app.UseCors("AllowReactApp");
+
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
