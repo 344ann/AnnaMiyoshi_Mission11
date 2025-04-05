@@ -39,10 +39,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHttpsRedirection();
+
 // Enable the CORS policy defined above so the backend can accept requests from the React frontend
 app.UseCors("AllowReactApp");
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

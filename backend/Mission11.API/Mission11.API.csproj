@@ -18,4 +18,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Bookstore.sqlite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

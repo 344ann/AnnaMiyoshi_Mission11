@@ -12,7 +12,8 @@ interface FetchBooksResponse {
 }
 
 // Base URL for your backend Book API
-const API_URL = 'http://localhost:5288/Book';
+const API_URL =
+  'https://mission13-annamiyoshi-backend-hwe5erhabvebekdz.eastus-01.azurewebsites.net/Book';
 
 // Fetches a list of books from the backend API with support for pagination,
 // sorting, and filtering by selected categories.
